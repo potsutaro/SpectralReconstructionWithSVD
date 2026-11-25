@@ -1,4 +1,4 @@
-# Lattice Spectral Reconstruction with Singular Value Decomposition
+# Spectral Reconstruction with Singular Value Decomposition
 
 A Python framework for solving inverse problems in lattice QCD using singular value decomposition (SVD), based on [arXiv:2605.15674](https://arxiv.org/abs/2605.15674).
 
