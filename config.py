@@ -1,0 +1,65 @@
+from dataclasses import dataclass
+import yaml
+
+@dataclass
+class Lattice:
+    T: int
+
+@dataclass
+class Statistics:
+    stati: int
+    configuration: int
+    binsize: int
+    bootstrap: int
+
+@dataclass
+class Analysis:
+    normalization: int
+    init: int
+    size: int
+    dof: int
+    fitini: int
+    fitfin: int
+    delta: float
+    nin: int
+    ntr: int
+    neb: int
+
+@dataclass
+class Mock:
+    state: int
+    error: float
+
+@dataclass
+class Paths:
+    corr: str
+
+@dataclass
+class Files:
+    rdata: str
+    cdata: str
+    ndata: str
+
+@dataclass
+class Config:
+    lattice: Lattice
+    statistics: Statistics
+    analysis: Analysis
+    mock: Mock
+    paths: Paths
+    files: Files
+
+    @classmethod
+    def from_yaml(cls, filename):
+
+        with open(filename) as f:
+            raw = yaml.safe_load(f)
+
+        return cls(
+            lattice=Lattice(**raw["lattice"]),
+            statistics=Statistics(**raw["statistics"]),
+            analysis=Analysis(**raw["analysis"]),
+            mock=Mock(**raw["mock"]),
+            paths=Paths(**raw["paths"]),
+            files=Files(**raw["files"]),
+        )

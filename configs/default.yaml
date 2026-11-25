@@ -1,0 +1,34 @@
+# config.yaml
+
+lattice:
+  T: 96
+
+statistics:
+  stati: 1  # 1 for bootstrap
+  configuration: 100
+  bootstrap: 500
+  binsize: 1
+
+analysis:
+  normalization: 1
+  init: 0
+  size: 21
+  dof: 22
+  fitini: 12
+  fitfin: 16
+  delta: 0.1
+  nin: 0
+  ntr: 7
+  neb: 6
+
+mock:
+  state: 2
+  error: 0.01
+
+paths:
+  corr: correlator_data
+
+files:
+  rdata: [PATH TO RAW DATA]
+  cdata: cdata
+  ndata: ndata
