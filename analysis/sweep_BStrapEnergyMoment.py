@@ -15,9 +15,9 @@ def main(cfg: Config):
     tolerance = 1e-14
     regulator = 0.0
     
-    wmin = 0.01
-    wmax = 3.01
-    nw = 1000
+    wmin = cfg.analysis.wmin
+    wmax = cfg.analysis.wmax
+    nw = cfg.analysis.nw
 
     size = cfg.analysis.dof
     delta = cfg.analysis.delta
@@ -346,7 +346,6 @@ def main(cfg: Config):
             for t in range(nt): 
                 val = SmearedSPF.regularizedSPF(t, wstep, KFuncA1st, S_diag, rho_c_jk[i], lmax, regulator)
                 val = val / Ct_jk[i][t]
-                # val = val / lmaxEMom0th_jk_list[0][i][t]
                 lmaxEMom1st.append(val)
             lmaxEMom1st_jk.append(lmaxEMom1st)
         lmaxEMom1st_jk_list.append(lmaxEMom1st_jk)
@@ -414,10 +413,6 @@ def main(cfg: Config):
             lmaxEMom2nd = []
             for t in range(nt): 
                 sav = SmearedSPF.regularizedSPF(t, wstep, KFuncA2nd, S_diag, rho_c_jk[i], lmax, regulator) 
-                # val = sav / Ct_jk[i][t] - (lmaxEMom1st_jk_list[0][i][t])**2
-                # val = sav / lmaxEMom0th_jk_list[0][i][t] - (lmaxEMom1st_jk_list[0][i][t])**2
-                # ave = SmearedSPF.regularizedSPF(t, wstep, KFuncA1st, S_diag, rho_c_jk[i], lmax, regulator) 
-                # val = (sav - ave * ave / Ct_jk[i][t]) / Ct_jk[i][t]
                 val = sav / Ct_jk[i][t] - (En_jk[i][t])**2
                 lmaxEMom2nd.append(val)
             lmaxEMom2nd_jk.append(lmaxEMom2nd)

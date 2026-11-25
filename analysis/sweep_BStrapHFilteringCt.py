@@ -15,9 +15,9 @@ def main(cfg: Config):
     tolerance = 1e-14
     regulator = 0.0
     
-    wmin = 0.01
-    wmax = 3.01
-    nw = 1000
+    wmin = cfg.analysis.wmin
+    wmax = cfg.analysis.wmax
+    nw = cfg.analysis.nw
 
     size = cfg.analysis.dof
     delta = cfg.analysis.delta

@@ -36,7 +36,6 @@ def SingularValueDecomposition(K):
     # SVD for T
     U, S_diag, V_t = sp.linalg.svd(K)
     size = len(S_diag)
-    # print(S_diag)
     N_diag = S_diag / S_diag[0]
     S_list = list(N_diag)
 
@@ -150,7 +149,6 @@ def GetPeakIndex(y):
 # smeared Spectral function
 
 def construct_K(nt, tmin, tstep, nw, wmin, wstep, t0):
-    # K = np.zeros((nt,nw), dtype=complex)
     K = np.zeros((nt,nw))
     
     # matrix K
@@ -158,28 +156,13 @@ def construct_K(nt, tmin, tstep, nw, wmin, wstep, t0):
         t = tmin + tstep * i
         for j in range(nw):
             w = wmin + wstep * j
-            # K[i,j] = true_Kernel(t,w,t0)
             K[i,j] = true_Kernel(t,w,t0) * np.sqrt(tstep*wstep)
 
     return K
 
-def construct_D(nw, wmin, wstep, delta):
-    D = np.zeros((nw,nw))
-
-    # matrix D
-    for i in range(nw):
-        wi = wmin + wstep * i
-        for j in range(nw):
-            wj = wmin + wstep * j
-            D[i,j] = true_smearingKernel(wi, wj, delta)
-
-    return D
-
 
 def true_Kernel(x, y, t0):
     K = np.exp(-1.0 * x * y) # normalized
-    # K = np.exp(-1.0j * x * y) # 
-    # K = np.exp(-1.0 * (x - 2*t0) * y) # original
 
     return K
 
@@ -258,18 +241,6 @@ def FittedRunJK(c, nt, edata_jk):
 #=============================================================#
 #=============================================================#
 # smeared Kernel
-
-def construct_S(nt, tmin, tstep, nw, wmin, wstep, a, b, N, t0, delta):
-    S = np.zeros((nt,nw))
-
-    # matrix S
-    for i in range(nt):
-        t = tmin + tstep * i 
-        for j in range(nw):
-            w = wmin + wstep * j
-            S[i,j] = calcIntegralSmearedKernel(a, b, N, t, w, t0, delta)
-
-    return S
 
 def calcIntegralSmearedKernel(a, b, N, i, w, t0, delta):
     # initialize
@@ -383,9 +354,6 @@ def BreitWignerDelta(x,y,delta):
     S = 1. / np.pi * nume / deno
     value = nume / deno
 
-    # norm = (1. + 2. / np.pi * np.arctan2(x, delta)) / delta
-    # value = value / norm
-
     return value
 
 #=============================================================#
@@ -413,7 +381,6 @@ def calcIntegralSharpRect(a, b, N, rho, lower, upper):
 def true_sharpRect(x, lower, upper):
     S = 0.0
     if (x >= lower and x <= upper):
-        # S = 1. / (upper - lower)
         S = 1.
 
     return S
@@ -482,7 +449,6 @@ def ErrorFunctionRect(x,lower,upper,delta):
     left = (x-lower) / (np.sqrt(2) * delta)
     right = (x-upper) / (np.sqrt(2) * delta)
     value = 0.5 * (sp.special.erf(left) - sp.special.erf(right))
-    # value = value / (upper - lower)
 
     return value
 
@@ -543,10 +509,6 @@ def calcIntegralHFilteringCt(a, b, N, t, VFunc_l, wcut_min, delta):
 
     s = h * ( (left + right) * 0.5 + s )
 
-    # # Kernel normalization
-    # norm = NormHFilteringKernel(a, b, N, t, wcut_min, delta)
-    # s = s / norm
-
     return s
 
 def true_hfilteringKernel(x, y, wcut_min, delta):
@@ -588,7 +550,6 @@ def ErrorFunctionStep(x,y,wcut_min,delta):
 def SigmoidFunctionStep(x,y,wcut_min,delta):
     value = 1. / (1. + np.exp(-(y-wcut_min) / delta))
     value = value * np.exp(-x*y)
-    # value = np.exp(-x*y)
 
 
     return value
@@ -914,13 +875,6 @@ def GvarFitSpectralFunction(x, y, dy, p0=None, plot=False):
 
         plt.errorbar(x, y, yerr=dy, fmt='o', label='data', color=colors[1], zorder=1)
         plt.plot(x_plot, gv.mean(y_fit), label='fit', color=colors[0], zorder=2)
-        # plt.fill_between(
-        #     x_plot,
-        #     gv.mean(y_fit) - gv.sdev(y_fit),
-        #     gv.mean(y_fit) + gv.sdev(y_fit),
-        #     alpha=0.3,
-        #     label='fit uncertainty'
-        # )
         plt.xlabel('x')
         plt.ylabel('y')
         plt.legend()
@@ -1109,9 +1063,7 @@ def PrintBasisFunc(UFunc, t_list, VFunc, w_list, rank, S_diag, cutoff, pwmin, pw
     v = open(vfile, 'w')
 
     for i in range(len(w_list)):
-        # strdata = str(w_list[i]) + ' ' + str(np.sqrt(S_diag[l])*VFunc[l][i]) + '\n'
         strdata = str(w_list[i]*cutoff) + ' ' + str(S_diag[l]*VFunc[l][i]) + '\n'
-        # strdata = str(w_list[i]) + ' ' + str(VFunc[l][i]) + '\n'
         v.write(strdata)
     v.close
 
@@ -1122,8 +1074,6 @@ def PrintBasisFunc(UFunc, t_list, VFunc, w_list, rank, S_diag, cutoff, pwmin, pw
 
     for i in range(len(t_list)):
         strdata = str(t_list[i]/cutoff) + ' ' + str(UFunc[l][i]) + '\n'
-        # strdata = str(t_list[i]) + ' ' + str(S_diag[l]*UFunc[l][i]) + '\n'
-        # strdata = str(t_list[i]) + ' ' + str(np.sqrt(S_diag[l])*UFunc[l][i]) + '\n'
         u.write(strdata)
     u.close
 

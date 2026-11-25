@@ -16,6 +16,9 @@ analysis:
   dof: 22
   fitini: 12
   fitfin: 16
+  wmin: 0.01
+  wmax: 3.01
+  nw: 1000
   delta: 0.1
   nin: 0
   ntr: 7

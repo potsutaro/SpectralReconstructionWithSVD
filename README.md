@@ -137,6 +137,9 @@ analysis:
   fitini: 12
   fitfin: 16
   delta: 0.1
+  wmax: 0.01
+  wmin: 3.01
+  nw: 1000
   nin: 0
   ntr: 7
   neb: 6
@@ -177,6 +180,9 @@ files:
 | `fitini` | First time slice included in the fit. |
 | `fitfin` | Last time slice included in the fit. |
 | `delta` | Smearing-width parameter. |
+| `wmax` | Minimum energy of the spectral reconstruction grid. |
+| `wmin` | Maximum energy of the spectral reconstruction grid. |
+| `nw` | Number of energy grid points used for spectral reconstruction. |
 | `nin` | First mode included in the analysis (fixed to 0). |
 | `ntr` | SVD truncation parameter. |
 | `neb` | Last mode included in the determination of the error band. |

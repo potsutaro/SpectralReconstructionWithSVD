@@ -21,6 +21,9 @@ class Analysis:
     fitini: int
     fitfin: int
     delta: float
+    wmin: int
+    wmax: int
+    nw: int
     nin: int
     ntr: int
     neb: int
